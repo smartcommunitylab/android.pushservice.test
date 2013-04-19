@@ -110,18 +110,11 @@
             android:layout_height="wrap_content"/>
     </TableRow>
 
-        <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="@string/remote_file_storage_demo_label"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
     
     <Button
         android:id="@+id/file_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/remote_file_storage_demo_label" />
+        android:text="Unregister" />
     
 </LinearLayout>

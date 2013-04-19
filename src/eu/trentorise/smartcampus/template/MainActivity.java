@@ -16,12 +16,16 @@
 package eu.trentorise.smartcampus.template;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
@@ -38,9 +42,11 @@ import eu.trentorise.smartcampus.ac.SCAccessProvider;
 import eu.trentorise.smartcampus.ac.authenticator.AMSCAccessProvider;
 import eu.trentorise.smartcampus.ac.model.Attribute;
 import eu.trentorise.smartcampus.ac.model.UserData;
+
 import eu.trentorise.smartcampus.profileservice.ProfileService;
 import eu.trentorise.smartcampus.profileservice.ProfileServiceException;
 import eu.trentorise.smartcampus.profileservice.model.BasicProfile;
+import eu.trentorise.smartcampus.puschservice.GCMServerUtilities;
 import eu.trentorise.smartcampus.puschservice.PushServiceActivity;
 import eu.trentorise.smartcampus.pushservice.test.R;
 
@@ -76,7 +82,7 @@ public class MainActivity extends PushServiceActivity {
 		String appName= getApplicationContext()
 				.getPackageName();
 		
-		super.init(serverurl,senderid,appName,mToken);
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
@@ -91,8 +97,10 @@ public class MainActivity extends PushServiceActivity {
 			
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, FileActivity.class);
-				MainActivity.this.startActivity(intent);
+				MainActivity.super.unRegisterPush();
+				Toast toast = Toast.makeText(getApplicationContext(), "Unregister to Server", Toast.LENGTH_LONG);
+				toast.show();
+				
 			}
 		});
 		
@@ -110,6 +118,12 @@ public class MainActivity extends PushServiceActivity {
 				new LoadUserDataFromACServiceTask().execute(mToken);
 				// access the basic user profile data remotely
 				new LoadUserDataFromProfileServiceTask().execute(mToken);
+				//init service gcm
+				super.init(serverurl,senderid,appName,mToken);
+				
+		
+			
+			
 			}
 		} catch (OperationCanceledException e) {
 			Log.e(TAG, "Login cancelled.");
